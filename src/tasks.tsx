@@ -1,8 +1,9 @@
 import { useCallback, useState } from "react";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 
 import TaskCard from "./components/task-card";
 import { GrAdd } from "react-icons/gr";
+import { SlOptionsVertical } from "react-icons/sl";
 import {
   taskArray,
   statusArray,
@@ -10,6 +11,7 @@ import {
   statusType,
 } from "./utils/data-tasks";
 import AddTask from "./components/add-task";
+import { getAllStatus, getAllTask } from "./services/api";
 
 function Tasks() {
   const [showAddtaskModal, setShowAddtaskModal] = useState(false);
@@ -18,11 +20,29 @@ function Tasks() {
     null
   );
 
-  const colums = statusArray?.map((status) => {
-    const taskInColunm = tasks.filter((task) => task.status === status);
+  const {
+    data: StatusData,
+    isLoading: statusLoading,
+    error: statusError,
+  } = useQuery({
+    queryKey: ["status"],
+    queryFn: getAllStatus,
+  });
+
+  const {
+    data: tasksData,
+    isLoading: tasksLoading,
+    error: taskError,
+  } = useQuery({
+    queryKey: ["tasks"],
+    queryFn: getAllTask,
+  });
+
+  const colums = StatusData?.map((status) => {
+    const taskInColunm = tasksData?.filter((task) => task.status === status);
     return {
       status,
-      totalPoints: taskInColunm.reduce(
+      totalPoints: taskInColunm?.reduce(
         (accu, current) => accu + current?.points,
         0
       ),
@@ -58,22 +78,32 @@ function Tasks() {
     setCurrentlyHovering(status);
   };
   return (
-    <div className="flex divide-x">
+    <div className="flex divide-x mt-3">
       {colums?.map((colum, i) => (
         <div
           onDrop={(e) => handleDrop(e, colum.status)}
           onDragOver={(e) => e.preventDefault()}
           onDragEnter={(e) => handleDragEnter(colum.status)}
           key={i}
-          className={currentlyHovering === colum.status ? "bg-gray-100" : ""}
+          className={
+            currentlyHovering === colum.status
+              ? "bg-gray-100"
+              : "bg-gray-50 rounded-lg mx-2"
+          }
         >
           <div className="flex items-center justify-between px-2">
-            <h3 className="text-3xl p-2 capitalize font-bold text-gray-500">
-              {colum.status}
-            </h3>
-            <span className="text-xl rounded-full bg-gray-100 px-2 text-gray-500">
-              {colum?.totalPoints}
-            </span>
+            <div className="flex items-center">
+              <h3 className="text-2xl p-1 capitalize font-bold text-gray-500">
+                {colum.status}
+              </h3>
+              <span className="text-sm rounded-full bg-white  text-gray-500">
+                {colum?.totalPoints}
+              </span>
+            </div>
+
+            <button>
+              <SlOptionsVertical />
+            </button>
           </div>
           {colum.tasks.map((task, index) => (
             <TaskCard key={index} task={task} updateTask={updateTask} />
@@ -84,7 +114,7 @@ function Tasks() {
       {showAddtaskModal === false && (
         <button
           onClick={() => setShowAddtaskModal(!showAddtaskModal)}
-          className="absolute  bottom-10 right-10 bg-gray-200 h-12 w-12 hover:scale-110 duration-300 flex items-center justify-center rounded-full"
+          className="absolute  bottom-10 right-10 bg-gray-100 h-12 w-12 hover:scale-110 duration-300 flex items-center justify-center rounded-full"
         >
           <GrAdd className="text-3xl" />
         </button>

@@ -31,7 +31,7 @@ function TaskCard({ task, updateTask }: taskCardProps) {
     <div
       draggable
       onDragStart={(e) => e.dataTransfer.setData("id", id.toString())}
-      className="border rounded-lg py-2 px-2 m-2 bg-gray-50 w-56"
+      className="border rounded-lg py-2 px-2 m-2 bg-white w-56"
     >
       <div className="py-2">
         {isEditing ? (
