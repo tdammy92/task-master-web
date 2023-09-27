@@ -27,7 +27,7 @@ const getAllStatus = async () => {
 //create a task
 const createTask = async ({ body }: { body: TaskCardType }) => {
   try {
-    const res = await axios.post(`${baseApi}tasks`, { data: body });
+    const res = await axios.post(`${baseApi}tasks`, { ...body });
     return await res.data;
   } catch (error) {
     throw error;

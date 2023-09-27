@@ -4,7 +4,11 @@ import {
   FaArrowsAltH,
   FaLongArrowAltDown,
   FaLongArrowAltUp,
+  FaRegTrashAlt,
 } from "react-icons/fa";
+import { HiOutlineClock } from "react-icons/hi2";
+import { format } from "date-fns";
+import { formatMessageDateTime } from "../utils/date";
 
 type taskCardProps = {
   task: TaskCardType;
@@ -12,20 +16,8 @@ type taskCardProps = {
 };
 
 function TaskCard({ task, updateTask }: taskCardProps) {
-  const { title, id, points, priority } = task;
+  const { title, id, priority, createdAt, updatedAt } = task;
   const [isEditing, setIsEditing] = useState(false);
-  const updatePoints = (sign: "-" | "+") => {
-    if (sign == "+") {
-      if (points >= 13) {
-        return;
-      }
-      updateTask({ ...task, points: points + 1 });
-    } else {
-      if (points === 0) return;
-
-      updateTask({ ...task, points: points - 1 });
-    }
-  };
 
   return (
     <div
@@ -36,7 +28,7 @@ function TaskCard({ task, updateTask }: taskCardProps) {
       <div className="py-2">
         {isEditing ? (
           <input
-            className="text-base font-base"
+            className="text-base font-base focus:outline-none"
             value={title}
             onBlur={() => setIsEditing(false)}
             onChange={(e) => updateTask({ ...task, title: e.target.value })}
@@ -50,9 +42,16 @@ function TaskCard({ task, updateTask }: taskCardProps) {
           </h1>
         )}
       </div>
-      <div className="flex justify-between text-gray-500 py-2  text-sm">
+      <div className="flex justify-between items-center text-gray-500 py-2  text-sm">
         <div className="flex gap-2  items-center">
-          <p>BUS-{id}</p>
+          <div className="flex  items-center">
+            <HiOutlineClock className="text-l" />
+            <p>
+              {!!updatedAt
+                ? formatMessageDateTime(new Date(updatedAt))
+                : formatMessageDateTime(new Date())}
+            </p>
+          </div>
           <p>
             {priority === "low" && (
               <FaLongArrowAltDown className="text-amber-500" />
@@ -65,10 +64,9 @@ function TaskCard({ task, updateTask }: taskCardProps) {
             )}
           </p>
         </div>
-        <div className="flex  gap-x-1 text-basee ">
-          <button onClick={() => updatePoints("-")}>-</button>
-          <span className="text-sm font-semibold">{points}</span>
-          <button onClick={() => updatePoints("+")}>+</button>
+
+        <div>
+          <FaRegTrashAlt className="text-red-400" />
         </div>
       </div>
     </div>

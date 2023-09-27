@@ -34,8 +34,27 @@
       "id": 5,
       "status": "todo",
       "priority": "low"
+    },
+    {
+      "title": "dqw",
+      "status": "in-progress",
+      "priority": "low",
+      "id": 6,
+      "createdAt": "2023-09-27T20:52:53.548Z",
+      "updatedAt": "2023-09-27T20:52:53.548Z"
+    },
+    {
+      "title": "weef",
+      "status": "done",
+      "priority": "medium",
+      "id": 7,
+      "createdAt": "2023-09-27T21:06:31.789Z",
+      "updatedAt": "2023-09-27T21:06:31.789Z"
     }
   ],
-
-  "status": ["todo", "in-progress", "done"]
+  "status": [
+    "in-progress",
+    "todo",
+    "done"
+  ]
 }

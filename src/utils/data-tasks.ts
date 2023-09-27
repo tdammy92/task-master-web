@@ -1,14 +1,16 @@
 export type statusType = "todo" | "in-progress" | "done";
 
 export type prorityType = "low" | "medium" | "high";
+
+export const colorTag = ["green", "amber", "purple", "rose", "cyan"];
+
 export type TaskCardType = {
   title: string;
-  points: number;
   status: statusType;
   priority: prorityType;
-  id: number;
-  createdAt: Date;
-  updatedAt: Date;
+  id: number | string;
+  createdAt: string;
+  updatedAt: string;
 };
 
 export const statusArray: statusType[] = ["todo", "in-progress", "done"];

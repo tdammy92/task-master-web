@@ -4,12 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import TaskCard from "./components/task-card";
 import { GrAdd } from "react-icons/gr";
 import { SlOptionsVertical } from "react-icons/sl";
-import {
-  taskArray,
-  statusArray,
-  TaskCardType,
-  statusType,
-} from "./utils/data-tasks";
+import { taskArray, TaskCardType, statusType } from "./utils/data-tasks";
 import AddTask from "./components/add-task";
 import { getAllStatus, getAllTask } from "./services/api";
 
@@ -38,14 +33,13 @@ function Tasks() {
     queryFn: getAllTask,
   });
 
-  const colums = StatusData?.map((status) => {
-    const taskInColunm = tasksData?.filter((task) => task.status === status);
+  const colums = StatusData?.map((status: statusType) => {
+    const taskInColunm = tasksData?.filter(
+      (task: TaskCardType) => task?.status === status
+    );
     return {
       status,
-      totalPoints: taskInColunm?.reduce(
-        (accu, current) => accu + current?.points,
-        0
-      ),
+      totalItems: taskInColunm?.length,
       tasks: taskInColunm,
     };
   });
@@ -79,7 +73,7 @@ function Tasks() {
   };
   return (
     <div className="flex divide-x mt-3">
-      {colums?.map((colum, i) => (
+      {colums?.map((colum, i: number) => (
         <div
           onDrop={(e) => handleDrop(e, colum.status)}
           onDragOver={(e) => e.preventDefault()}
@@ -97,7 +91,7 @@ function Tasks() {
                 {colum.status}
               </h3>
               <span className="text-sm rounded-full bg-white  text-gray-500">
-                {colum?.totalPoints}
+                {colum?.totalItems}
               </span>
             </div>
 
@@ -105,7 +99,7 @@ function Tasks() {
               <SlOptionsVertical />
             </button>
           </div>
-          {colum.tasks.map((task, index) => (
+          {colum?.tasks?.map((task: TaskCardType, index: number) => (
             <TaskCard key={index} task={task} updateTask={updateTask} />
           ))}
         </div>
