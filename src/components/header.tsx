@@ -1,5 +1,7 @@
+import { format } from "date-fns";
 import React from "react";
 import { BsSearch } from "react-icons/bs";
+import { HiOutlineClock } from "react-icons/hi2";
 import { IoOptionsOutline } from "react-icons/io5";
 
 function Headeer() {
@@ -12,8 +14,15 @@ function Headeer() {
         <input placeholder="search task" className="focus:outline-none" />
         <BsSearch />
       </div>
-      <div>
-        <IoOptionsOutline className="text-xl" />
+
+      <div className="flex items-center gap-x-3">
+        <div className="flex items-center gap-x-1 text-sm">
+          <HiOutlineClock className="text-l" />{" "}
+          <span>{format(new Date(), "dd MMM yyyy hh:mm a")}</span>
+        </div>
+        <div>
+          <IoOptionsOutline className="text-xl" />
+        </div>
       </div>
     </div>
   );

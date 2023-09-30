@@ -2,13 +2,23 @@ export type statusType = "todo" | "in-progress" | "done";
 
 export type prorityType = "low" | "medium" | "high";
 
-export const colorTag = ["green", "amber", "purple", "rose", "cyan"];
+export const colorTag = [
+  "bg-green-400",
+  "bg-amber-400",
+  "bg-purple-400",
+  "bg-rose-400",
+  "bg-cyan-400",
+  "bg-blue-400",
+  "bg-lime-400",
+];
 
 export type TaskCardType = {
   title: string;
   status: statusType;
   priority: prorityType;
+  color?: string;
   id: number | string;
+  dueDate: string;
   createdAt: string;
   updatedAt: string;
 };
